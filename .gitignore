@@ -1,2 +1,11 @@
+# Ignorar todo en la carpeta input/
 input/*
+
+# ¡Exceptuar el archivo .gitkeep!
+!input/.gitkeep
+
+# Ignorar todo en la carpeta processed/
 processed/*
+
+# ¡Exceptuar el archivo .gitkeep!
+!processed/.gitkeep
