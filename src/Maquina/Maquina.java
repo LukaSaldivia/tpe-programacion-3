@@ -11,7 +11,7 @@ public class Maquina {
   private void processString(String raw){
     String[] data = raw.split(",");
 
-    nombre = data[0];
+    nombre = data[0].strip();
     piezas = Integer.parseInt(data[1].strip());
   }
 
@@ -24,6 +24,6 @@ public class Maquina {
   }
 
   public String toString(){
-    return "["+nombre + ","+piezas+"]";
+    return "("+nombre + ", "+piezas+")";
   }
 }

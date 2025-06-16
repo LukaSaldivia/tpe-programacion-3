@@ -1,8 +1,6 @@
 package FileManager;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,7 +16,6 @@ public class FileManager {
 
   public FileManager() {
     maquinas = new ArrayList<Maquina>();
-
   }
 
   public void processFile() {
@@ -49,8 +46,6 @@ public class FileManager {
             maquinas.add(new Maquina(linea));
 
           }
-
-          // break;
         }
 
         LocalDateTime ahora = LocalDateTime.now();
