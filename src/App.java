@@ -1,3 +1,4 @@
+import Algoritmos.Backtracking;
 import FileManager.FileManager;
 
 public class App {
@@ -9,6 +10,8 @@ public class App {
 
     System.out.println(FM.getPiezasTotales());
     System.out.println(FM.getMaquinas());
+
+    Backtracking.run(FM.getPiezasTotales(), FM.getMaquinas());
   }
 
   
