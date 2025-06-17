@@ -7,6 +7,39 @@ import misc.Module;
 
 import Maquina.Maquina;
 
+/*
+ * Algoritmo Greedy:
+ *
+ * Estrategia general:
+ * - El objetivo es alcanzar exactamente una cantidad de piezas (objetivo) utilizando máquinas.
+ * - En cada paso se selecciona la "mejor" máquina según un criterio voraz implementado en la clase Module.
+ * - Se continúa agregando máquinas hasta alcanzar el objetivo (o hasta pasarse, si no hay solución exacta).
+ *
+ * Candidatos:
+ * - Cada máquina se representa como un "Module", que calcula el módulo entre las piezas restantes y la cantidad que produce.
+ * - Esto permite elegir máquinas que se ajusten mejor al número restante de piezas.
+ *
+ * Criterio de selección (ver clase Module):
+ * - Se prioriza el menor módulo respecto a las piezas restantes.
+ * - Si hay empate en el módulo:
+ *    - Se prefiere par sobre impar.
+ *    - Entre pares, se prefiere el de mayor valor.
+ *    - Entre impares:
+ *       - Se evita elegir máquinas que producen exactamente 1 (último recurso).
+ *       - Se prefiere el de menor valor.
+ * 
+ * Construcción de la solución:
+ * - Se elige en cada iteración el mejor módulo (máquina) según este orden.
+ * - Se resta su valor del objetivo restante y se repite hasta llegar a 0.
+ *
+ * Solución válida:
+ * - Si se alcanza exactamente el objetivo, se imprime la secuencia de máquinas usadas.
+ * - No se garantiza optimalidad; puede usar más máquinas que una solución exacta con backtracking.
+ *
+ * Métrica adicional:
+ * - Se cuenta cuántos candidatos se consideraron en total (contadorCandidatos).
+ */
+
 public class Greedy {
 
   private static int contadorCandidatos = 0;

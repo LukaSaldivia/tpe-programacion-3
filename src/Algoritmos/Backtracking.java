@@ -5,6 +5,29 @@ import java.util.List;
 
 import Maquina.Maquina;
 
+/*
+ * Algoritmo Backtracking:
+ *
+ * Estrategia general:
+ * - Se busca una combinación de máquinas cuya suma total de piezas sea exactamente igual al objetivo.
+ * - Cada estado representa una selección parcial de máquinas (lista 'parcial').
+ * - El objetivo es encontrar la combinación válida con la menor cantidad de máquinas.
+ * 
+ * Generación de estados:
+ * - En cada paso se considera agregar una nueva máquina desde la posición actual en adelante.
+ * - Se realiza una llamada recursiva por cada posibilidad.
+ *
+ * Soluciones válidas:
+ * - Un estado es solución si la suma de piezas de la lista 'parcial' es igual al objetivo.
+ * - Se guarda como mejor solución si usa menos máquinas que la anterior (o si no había ninguna).
+ *
+ * Podas aplicadas:
+ * - Si la suma acumulada supera el objetivo, se corta la búsqueda.
+ * - Si la cantidad de máquinas en 'parcial' ya supera o iguala a la mejor solución encontrada hasta ahora, se corta.
+ *
+ * Métrica adicional:
+ * - Se cuenta la cantidad de estados generados durante el recorrido (variable 'contadorEstados').
+ */
 public class Backtracking {
   private static int contadorEstados = 0;
 

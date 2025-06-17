@@ -9,12 +9,14 @@ public class App {
 
     FM.processFile();
 
-    System.out.println(FM.getPiezasTotales());
-    System.out.println(FM.getMaquinas());
+    System.out.println("\n---- Encendidos eficientes SA ----");
+    System.out.println("Piezas requeridas: "+FM.getPiezasTotales());
+    System.out.println("Máquinas disponibles: "+FM.getMaquinas());
 
     Backtracking.run(FM.getPiezasTotales(), FM.getMaquinas());
-    
     Greedy.run(FM.getPiezasTotales(), FM.getMaquinas());
+    System.out.println("\n----------------------------------");
+    System.out.println("");
   }
-
+  
 }
