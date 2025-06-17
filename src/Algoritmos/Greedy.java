@@ -85,7 +85,7 @@ public class Greedy {
     System.out.println("");
     System.out.println("Solución obtenida: \n- Piezas producidas: " + (huboSolucion ? objetivo : 0)
         + " \n- Puestas en funcionamiento: " + solucion.size());
-    System.out.println("Cantidad de estados generados: " + contadorCandidatos);
+    System.out.println("Cantidad de candidatos considerados: " + contadorCandidatos);
   }
 
 }
