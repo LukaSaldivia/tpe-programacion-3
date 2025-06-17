@@ -1,4 +1,5 @@
 import Algoritmos.Backtracking;
+import Algoritmos.Greedy;
 import FileManager.FileManager;
 
 public class App {
@@ -12,7 +13,8 @@ public class App {
     System.out.println(FM.getMaquinas());
 
     Backtracking.run(FM.getPiezasTotales(), FM.getMaquinas());
+    
+    Greedy.run(FM.getPiezasTotales(), FM.getMaquinas());
   }
 
-  
 }

@@ -7,6 +7,7 @@ import Maquina.Maquina;
 
 public class Backtracking {
   private static int contadorEstados = 0;
+
   public static void run(int objetivo, List<Maquina> maquinas) {
     ArrayList<Maquina> solucion = new ArrayList<>(), parcial = new ArrayList<>();
 
@@ -18,15 +19,20 @@ public class Backtracking {
       parcial.remove(m);
     }
 
-      System.out.println("\nBacktracking");
-      System.out.println("Solución obtenida: "+solucion);
-      System.out.println("Solución obtenida: \n- Piezas producidas: "+ (solucion.size() > 0 ? objetivo : 0) +" \n- Puestas en funcionamiento: "+solucion.size());
-      System.out.println("Cantidad de estados generados: "+contadorEstados);
+    System.out.println("\nBacktracking");
+    System.out.print("Secuencia obtenida: ");
+    if (solucion.size() > 0) { 
+      for (Maquina maquina : solucion) {
+        System.out.print(maquina.getNombre() + " ");
+      }
+    }else{
+      System.out.print("Sin solución");
     }
-
-
-
-  
+    System.out.println("");
+    System.out.println("Solución obtenida: \n- Piezas producidas: " + (solucion.size() > 0 ? objetivo : 0)
+        + " \n- Puestas en funcionamiento: " + solucion.size());
+    System.out.println("Cantidad de estados generados: " + contadorEstados);
+  }
 
   private static List<Maquina> visit(List<Maquina> maquinas, List<Maquina> solucion, List<Maquina> parcial, int index,
       int objetivo) {
