@@ -28,7 +28,7 @@ Este proyecto implementa dos algoritmos (Greedy y Backtracking) para seleccionar
 
 ### 1. Colocar el archivo de entrada
 
-Ubique un archivo `.txt` dentro de la carpeta `input/`. El archivo debe seguir el formato esperado por el programa (ver sección Formato del archivo).
+Ubique un archivo `.txt` dentro de la carpeta `input/`. El archivo debe seguir el formato esperado por el programa (ver sección [Formato del archivo de entrada `(.txt)`](#formato-del-archivo-de-entrada-txt)).
 
 > Solo se procesará **un archivo por ejecución**. Si hay múltiples archivos en `input/`, se tomará uno arbitrariamente.
 
