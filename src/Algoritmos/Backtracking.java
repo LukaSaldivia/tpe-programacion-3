@@ -1,6 +1,7 @@
 package Algoritmos;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import Maquina.Maquina;
@@ -26,25 +27,32 @@ import misc.Solucion;
  * - Si la suma acumulada supera el objetivo, se corta la búsqueda.
  * - Si la cantidad de máquinas en 'parcial' ya supera o iguala a la mejor solución encontrada hasta ahora, se corta.
  *
- * Poda:
+ * Podas:
  * - No se consideran máquinas pasadas para evitar repeticiones debido a la conmutatividad de la suma.
+ * - No se consideran máquinas que sumen la misma cantidad de piezas que la actual.
  *
  * Métrica adicional:
  * - Se cuenta la cantidad de estados generados durante el recorrido (variable 'contadorEstados').
  */
-public class Backtracking implements Solucion{
+public class Backtracking implements Solucion {
   private int contadorEstados = 0, piezasProducidas = 0;
   private ArrayList<Maquina> solucion;
 
-  public Backtracking(){
+  public Backtracking() {
     solucion = new ArrayList<>();
   }
 
   public void run(int objetivo, List<Maquina> maquinas) {
     ArrayList<Maquina> parcial = new ArrayList<>();
+    HashSet<Integer> piezasRecorridas = new HashSet<>();
 
     for (int i = 0; i < maquinas.size(); i++) {
       Maquina m = maquinas.get(i);
+      if (piezasRecorridas.contains(m.getPiezas()))
+      continue;
+
+      piezasRecorridas.add(m.getPiezas());
+      
       parcial.add(m);
       visit(maquinas, solucion, parcial, i, objetivo, m.getPiezas());
       contadorEstados++;
@@ -54,10 +62,10 @@ public class Backtracking implements Solucion{
 
   private void visit(List<Maquina> maquinas, List<Maquina> solucion, List<Maquina> parcial, int index,
       int objetivo, int sumaAcumulada) {
-        
-        if (sumaAcumulada > objetivo || (!solucion.isEmpty() && parcial.size() >= solucion.size())) {
-          return;
-        }
+
+    if (sumaAcumulada > objetivo || (!solucion.isEmpty() && parcial.size() >= solucion.size())) {
+      return;
+    }
 
     if (sumaAcumulada == objetivo) {
       if (parcial.size() < solucion.size() || solucion.isEmpty()) {
@@ -69,6 +77,9 @@ public class Backtracking implements Solucion{
     } else {
       for (int i = index; i < maquinas.size(); i++) {
         Maquina next = maquinas.get(i);
+        if (maquinas.get(index).getPiezas() == maquinas.get(i).getPiezas() && i != index)
+          continue;
+
         parcial.add(next);
         visit(maquinas, solucion, parcial, i, objetivo, sumaAcumulada + next.getPiezas());
         this.contadorEstados++;
@@ -96,14 +107,14 @@ public class Backtracking implements Solucion{
   @Override
   public String getSecuencia() {
     String res = "";
-    if (solucion.size() > 0) { 
+    if (solucion.size() > 0) {
       for (Maquina maquina : solucion) {
         res += maquina.getNombre() + " ";
       }
-    }else{
+    } else {
       res = "Sin solución";
     }
-    
+
     return res;
   }
 }
