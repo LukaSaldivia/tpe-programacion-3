@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import misc.Module;
-
+import misc.Solucion;
 import Maquina.Maquina;
 
 /*
@@ -40,13 +40,20 @@ import Maquina.Maquina;
  * - Se cuenta cuántos candidatos se consideraron en total (contadorCandidatos).
  */
 
-public class Greedy {
+public class Greedy implements Solucion {
 
-  private static int contadorCandidatos = 0;
+  private int contadorCandidatos = 0;
+  private ArrayList<Maquina> solucion;
+  private boolean huboSolucion;
+  private int piezasNecesarias;
 
-  public static void run(int objetivo, List<Maquina> maquinas) {
+  public Greedy() {
+    solucion = new ArrayList<>();
+    huboSolucion = false;
+  }
 
-    ArrayList<Maquina> solucion = new ArrayList<>();
+  public void run(int objetivo, List<Maquina> maquinas) {
+    piezasNecesarias = objetivo;
 
     // Setteando el ArrayList de modulos para ordenar mejor y simplemente hacer
     // get(0) para obtener el mejor candidato
@@ -66,26 +73,41 @@ public class Greedy {
       Collections.sort(modules);
 
       Module selected = modules.get(0);
-      contadorCandidatos++;
+      contadorCandidatos+= modules.size();
       solucion.add(selected.getMaquina());
       objetivoCopia -= selected.getValue();
     }
 
-    System.out.println("");
-    System.out.println("Greedy");
-    System.out.print("Secuencia obtenida: ");
-    boolean huboSolucion = objetivo + objetivoCopia == objetivo;
+    huboSolucion = objetivo + objetivoCopia == objetivo;
+  }
+
+  @Override
+  public String getSecuencia() {
+    String res = "";
     if (huboSolucion) {
       for (Maquina maquina : solucion) {
-        System.out.print(maquina.getNombre() + " ");
+        res += maquina.getNombre() + " ";
       }
-    }else{
-      System.out.print("Sin solución");  
+    } else {
+      res = "Sin solución";
     }
-    System.out.println("");
-    System.out.println("Solución obtenida: \n- Piezas producidas: " + (huboSolucion ? objetivo : 0)
-        + " \n- Puestas en funcionamiento: " + solucion.size());
-    System.out.println("Cantidad de candidatos considerados: " + contadorCandidatos);
+
+    return res;
+  }
+
+  @Override
+  public int getPuestasEnFuncionamiento() {
+    return solucion.size();
+  }
+
+  @Override
+  public int getPiezasProducidas() {
+    return huboSolucion ? piezasNecesarias : 0;
+  }
+
+  @Override
+  public int getCantidadDeEstadosGenerados() {
+    return contadorCandidatos;
   }
 
 }

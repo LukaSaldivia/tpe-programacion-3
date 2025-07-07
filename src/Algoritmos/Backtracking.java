@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Maquina.Maquina;
+import misc.Solucion;
 
 /*
  * Algoritmo Backtracking:
@@ -21,75 +22,88 @@ import Maquina.Maquina;
  * - Un estado es solución si la suma de piezas de la lista 'parcial' es igual al objetivo.
  * - Se guarda como mejor solución si usa menos máquinas que la anterior (o si no había ninguna).
  *
- * Podas aplicadas:
+ * Restricciones aplicadas:
  * - Si la suma acumulada supera el objetivo, se corta la búsqueda.
  * - Si la cantidad de máquinas en 'parcial' ya supera o iguala a la mejor solución encontrada hasta ahora, se corta.
+ *
+ * Poda:
+ * - No se consideran máquinas pasadas para evitar repeticiones debido a la conmutatividad de la suma.
  *
  * Métrica adicional:
  * - Se cuenta la cantidad de estados generados durante el recorrido (variable 'contadorEstados').
  */
-public class Backtracking {
-  private static int contadorEstados = 0;
+public class Backtracking implements Solucion{
+  private int contadorEstados = 0, piezasProducidas = 0;
+  private ArrayList<Maquina> solucion;
 
-  public static void run(int objetivo, List<Maquina> maquinas) {
-    ArrayList<Maquina> solucion = new ArrayList<>(), parcial = new ArrayList<>();
+  public Backtracking(){
+    solucion = new ArrayList<>();
+  }
+
+  public void run(int objetivo, List<Maquina> maquinas) {
+    ArrayList<Maquina> parcial = new ArrayList<>();
 
     for (int i = 0; i < maquinas.size(); i++) {
       Maquina m = maquinas.get(i);
       parcial.add(m);
-      visit(maquinas, solucion, parcial, i, objetivo);
+      visit(maquinas, solucion, parcial, i, objetivo, m.getPiezas());
       contadorEstados++;
       parcial.remove(m);
     }
-
-    System.out.println("\nBacktracking");
-    System.out.print("Secuencia obtenida: ");
-    if (solucion.size() > 0) { 
-      for (Maquina maquina : solucion) {
-        System.out.print(maquina.getNombre() + " ");
-      }
-    }else{
-      System.out.print("Sin solución");
-    }
-    System.out.println("");
-    System.out.println("Solución obtenida: \n- Piezas producidas: " + (solucion.size() > 0 ? objetivo : 0)
-        + " \n- Puestas en funcionamiento: " + solucion.size());
-    System.out.println("Cantidad de estados generados: " + contadorEstados);
   }
 
-  private static List<Maquina> visit(List<Maquina> maquinas, List<Maquina> solucion, List<Maquina> parcial, int index,
-      int objetivo) {
-
-    int sumaAcumulada = getSuma(parcial);
-
-    if (sumaAcumulada > objetivo || (!solucion.isEmpty() && parcial.size() >= solucion.size())) {
-      return solucion;
-    }
+  private void visit(List<Maquina> maquinas, List<Maquina> solucion, List<Maquina> parcial, int index,
+      int objetivo, int sumaAcumulada) {
+        
+        if (sumaAcumulada > objetivo || (!solucion.isEmpty() && parcial.size() >= solucion.size())) {
+          return;
+        }
 
     if (sumaAcumulada == objetivo) {
       if (parcial.size() < solucion.size() || solucion.isEmpty()) {
         solucion.clear();
         solucion.addAll(parcial);
+        piezasProducidas = objetivo;
       }
+      return;
     } else {
-      for (int i = 0; i < maquinas.size() - index; i++) {
-        Maquina next = maquinas.get(index + i);
+      for (int i = index; i < maquinas.size(); i++) {
+        Maquina next = maquinas.get(i);
         parcial.add(next);
-        visit(maquinas, solucion, parcial, index + i, objetivo);
-        contadorEstados++;
+        visit(maquinas, solucion, parcial, i, objetivo, sumaAcumulada + next.getPiezas());
+        this.contadorEstados++;
         parcial.remove(next);
       }
     }
-    return solucion;
+
   }
 
-  private static int getSuma(List<Maquina> parcial) {
-    int suma = 0;
+  @Override
+  public int getCantidadDeEstadosGenerados() {
+    return contadorEstados;
+  }
 
-    for (Maquina maquina : parcial) {
-      suma += maquina.getPiezas();
+  @Override
+  public int getPiezasProducidas() {
+    return piezasProducidas;
+  }
+
+  @Override
+  public int getPuestasEnFuncionamiento() {
+    return solucion.size();
+  }
+
+  @Override
+  public String getSecuencia() {
+    String res = "";
+    if (solucion.size() > 0) { 
+      for (Maquina maquina : solucion) {
+        res += maquina.getNombre() + " ";
+      }
+    }else{
+      res = "Sin solución";
     }
-
-    return suma;
+    
+    return res;
   }
 }
